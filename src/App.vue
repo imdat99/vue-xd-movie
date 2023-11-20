@@ -1,30 +1,38 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts" setup>
+import { Header } from "@/components";
+import { ref, watch, onBeforeMount } from "vue";
+import { Theme } from "@/utils/types";
+import { storageKey, defaultTheme } from "@/utils/constant";
+import Footer from "./components/footer/Footer.vue";
+
+const theme = ref<Theme>(defaultTheme);
+
+onBeforeMount(() => {
+  theme.value = (localStorage.getItem(storageKey) as Theme) || defaultTheme;
+});
+
+watch(theme, () => {
+  const root = window.document.documentElement;
+  root.classList.remove("light", "dark");
+  root.classList.add(theme.value);
+});
+const handleToggletheme = () => {
+  if (theme.value === "dark") {
+    theme.value = "light";
+  } else {
+    theme.value = "dark";
+  }
+  localStorage.setItem(storageKey, theme.value);
+};
 </script>
-
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="flex min-h-screen flex-col bg-background">
+    <Header :theme="theme" @toggletheme="handleToggletheme" />
+    <div class="flex-1 bg-background">
+      <div class="max-w-[1400px] mx-auto px-4 md:px-8">
+        <RouterView />
+      </div>
+    </div>
+    <Footer />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>

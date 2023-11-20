@@ -1,0 +1,59 @@
+# query HomeTitles {
+#   recommendedTitles: titles(first: 8, sort: "recommended") {
+#     nodes {
+#       tmdbBackdrop
+#       ...TitleBasics
+#       __typename
+#     }
+#     __typename
+#   }
+#   movieTitles: titles(first: 15, sort: "updated", types: ["movie"], watchable: true) {
+#     nodes {
+#       ...TitleBasics
+#       __typename
+#     }
+#     __typename
+#   }
+#   showTitles: titles(first: 10, sort: "updated", types: ["show"], watchable: true) {
+#     nodes {
+#       ...TitleBasics
+#       __typename
+#     }
+#     __typename
+#   }
+#   waitingTitles: titles(first: 20, sort: "updated", types: ["movie", "show"], watchable: null) {
+#     nodes {
+#       ...TitleBasics
+#       __typename
+#     }
+#     __typename
+#   }
+# }
+
+# fragment TitleBasics on Title {
+#   id
+#   nameEn
+#   nameVi
+#   type
+#   postedAt
+#   tmdbPoster
+#   publishDate
+#   intro
+#   imdbRating
+#   countries
+#   genres {
+#     nameVi
+#     slug
+#     __typename
+#   }
+#   translation
+#   __typename
+# }
+
+query NewQuery {
+  posts {
+    edges {
+      cursor
+    }
+  }
+}
